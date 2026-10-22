@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Join · xe33Hunt</title>
+<style>
+  :root { --bg:#0b0a12; --card:#15131f; --text:#ece9f6; --muted:#9a94b3; --violet:#8b5cf6; --violet-2:#6d3fe0; }
+  html,body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui,Segoe UI,Roboto,sans-serif; }
+  main { max-width:420px; margin:12vh auto; padding:0 16px; text-align:center; }
+  .card { background:var(--card); border-radius:16px; padding:28px 22px; box-shadow:0 0 60px rgba(139,92,246,.18); }
+  h1 { font-size:22px; margin:0 0 6px; }
+  p { margin:8px 0; color:var(--muted); }
+  a.btn { display:inline-block; margin:18px 0 6px; padding:14px 26px; border-radius:12px; background:var(--violet);
+          color:#fff; font-weight:600; text-decoration:none; }
+  a.btn:active { background:var(--violet-2); }
+  a.alt { color:var(--muted); font-size:14px; }
+  .err { color:#f87171; }
+</style>
+</head>
+<body>
+<main><div class="card" id="card">
+  <h1>Opening Roblox…</h1>
+  <p id="note">If nothing happens in a few seconds, press the button.</p>
+  <a class="btn" id="open" href="#">Open in Roblox</a>
+  <p><a class="alt" id="web" href="#">Roblox is closed? Use the website link instead</a></p>
+  <p class="small">In a game already? The reconnect screen can swallow the first try &mdash; press Open again.</p>
+</div></main>
+<script>
+(function () {
+  var PLACE = "15532962292";
+  var q = new URLSearchParams(location.search);
+  var id = (q.get("s") || q.get("id") || location.pathname.split("/").pop() || "").trim();
+  var card = document.getElementById("card");
+  if (!/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(id)) {
+    card.innerHTML = '<h1>No server in this link</h1><p class="err">Open the link from the alert itself.</p>';
+    return;
+  }
+  var app = "roblox://experiences/start?placeId=" + PLACE + "&gameInstanceId=" + id;
+  var web = "https://www.roblox.com/games/start?placeId=" + PLACE + "&gameInstanceId=" + id;
+  document.getElementById("open").href = app;
+  document.getElementById("web").href = web;
+  // The app deeplink is what a Roblox that's already in a game acts on; the website link only focuses it.
+  setTimeout(function () { location.href = app; }, 150);
+})();
+</script>
+</body>
+</html>
